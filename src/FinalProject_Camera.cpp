@@ -140,7 +140,7 @@ int main(int argc, const char *argv[])
         
         
         // REMOVE THIS LINE BEFORE PROCEEDING WITH THE FINAL PROJECT
-        continue; // skips directly to the next image without processing what comes beneath
+        //continue; // skips directly to the next image without processing what comes beneath
 
         /* DETECT IMAGE KEYPOINTS */
 
@@ -222,10 +222,30 @@ int main(int argc, const char *argv[])
             //// EOF STUDENT ASSIGNMENT
 
             // store matches in current data frame
-            (dataBuffer.end()-1)->bbMatches = bbBestMatches;
+            (dataBuffer.end() - 1)->bbMatches = bbBestMatches;
+
+            bVis = true;
+            if (bVis)
+            {
+                cv::Mat visImg = (dataBuffer.end() - 1)->cameraImg.clone();
+
+                for (int i=0; i<7; i++)
+                {
+                    cv::rectangle(visImg, cv::Point((dataBuffer.end() - 1)->boundingBoxes[i].roi.x, (dataBuffer.end() - 1)->boundingBoxes[i].roi.y), cv::Point((dataBuffer.end() - 1)->boundingBoxes[i].roi.x + (dataBuffer.end() - 1)->boundingBoxes[i].roi.width, (dataBuffer.end() - 1)->boundingBoxes[i].roi.y + (dataBuffer.end() - 1)->boundingBoxes[i].roi.height), cv::Scalar(0, 255, 0), 2);
+                    char str[2];
+                    sprintf(str, "%d", i);
+                    putText(visImg, str, cv::Point2f((dataBuffer.end() - 1)->boundingBoxes[i].roi.x, (dataBuffer.end() - 1)->boundingBoxes[i].roi.y), cv::FONT_HERSHEY_PLAIN, 2, cv::Scalar(0,0,255));
+                }
+
+                string windowName = "BBs";
+                cv::namedWindow(windowName, 4);
+                cv::imshow(windowName, visImg);
+                cout << "Press key to continue to next frame" << endl;
+                cv::waitKey(0);
+            }
+            bVis = false;
 
             cout << "#8 : TRACK 3D OBJECT BOUNDING BOXES done" << endl;
-
 
             /* COMPUTE TTC ON OBJECT IN FRONT */
 
@@ -236,7 +256,7 @@ int main(int argc, const char *argv[])
                 BoundingBox *prevBB, *currBB;
                 for (auto it2 = (dataBuffer.end() - 1)->boundingBoxes.begin(); it2 != (dataBuffer.end() - 1)->boundingBoxes.end(); ++it2)
                 {
-                    if (it1->second == it2->boxID) // check wether current match partner corresponds to this BB
+                    if (it1->second == it2->boxID) // check whether current match partner corresponds to this BB
                     {
                         currBB = &(*it2);
                     }
@@ -244,7 +264,7 @@ int main(int argc, const char *argv[])
 
                 for (auto it2 = (dataBuffer.end() - 2)->boundingBoxes.begin(); it2 != (dataBuffer.end() - 2)->boundingBoxes.end(); ++it2)
                 {
-                    if (it1->first == it2->boxID) // check wether current match partner corresponds to this BB
+                    if (it1->first == it2->boxID) // check whether current match partner corresponds to this BB
                     {
                         prevBB = &(*it2);
                     }
@@ -266,6 +286,7 @@ int main(int argc, const char *argv[])
                     clusterKptMatchesWithROI(*currBB, (dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints, (dataBuffer.end() - 1)->kptMatches);                    
                     computeTTCCamera((dataBuffer.end() - 2)->keypoints, (dataBuffer.end() - 1)->keypoints, currBB->kptMatches, sensorFrameRate, ttcCamera);
                     //// EOF STUDENT ASSIGNMENT
+                    cout << "GELDI!!! \n";
 
                     bVis = true;
                     if (bVis)
