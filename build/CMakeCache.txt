@@ -14,6 +14,9 @@
 # EXTERNAL cache entries
 ########################
 
+//The directory containing a CMake configuration file for Boost.
+Boost_DIR:PATH=/usr/local/lib/cmake/Boost-1.72.0
+
 //Path to a program.
 CMAKE_AR:FILEPATH=/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/ar
 
@@ -182,6 +185,18 @@ CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 //The directory containing a CMake configuration file for OpenCV.
 OpenCV_DIR:PATH=/Users/eren/OpenCV/opencv/build
 
+//The directory containing a CMake configuration file for boost_headers.
+boost_headers_DIR:PATH=/usr/local/lib/cmake/boost_headers-1.72.0
+
+//The directory containing a CMake configuration file for boost_program_options.
+boost_program_options_DIR:PATH=/usr/local/lib/cmake/boost_program_options-1.72.0
+
+//The directory containing a CMake configuration file for boost_system.
+boost_system_DIR:PATH=/usr/local/lib/cmake/boost_system-1.72.0
+
+//The directory containing a CMake configuration file for boost_thread.
+boost_thread_DIR:PATH=/usr/local/lib/cmake/boost_thread-1.72.0
+
 //Value Computed by CMake
 camera_fusion_BINARY_DIR:STATIC=/Users/eren/Desktop/SFND/Camera/SFND_3D_Object_Tracking/build
 
@@ -193,6 +208,8 @@ camera_fusion_SOURCE_DIR:STATIC=/Users/eren/Desktop/SFND/Camera/SFND_3D_Object_T
 # INTERNAL cache entries
 ########################
 
+//ADVANCED property for variable: Boost_DIR
+Boost_DIR-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_AR
 CMAKE_AR-ADVANCED:INTERNAL=1
 //This is the directory where this CMakeCache.txt was created
@@ -259,6 +276,10 @@ CMAKE_GENERATOR:INTERNAL=Unix Makefiles
 CMAKE_GENERATOR_PLATFORM:INTERNAL=
 //Name of generator toolset.
 CMAKE_GENERATOR_TOOLSET:INTERNAL=
+//Have symbol pthread_create
+CMAKE_HAVE_LIBC_CREATE:INTERNAL=1
+//Have include pthread.h
+CMAKE_HAVE_PTHREAD_H:INTERNAL=1
 //Source directory with the top level CMakeLists.txt file for this
 // project
 CMAKE_HOME_DIRECTORY:INTERNAL=/Users/eren/Desktop/SFND/Camera/SFND_3D_Object_Tracking
@@ -324,4 +345,12 @@ CMAKE_UNAME:INTERNAL=/usr/bin/uname
 CMAKE_VERBOSE_MAKEFILE-ADVANCED:INTERNAL=1
 //Details about finding OpenCV
 FIND_PACKAGE_MESSAGE_DETAILS_OpenCV:INTERNAL=[/Users/eren/OpenCV/opencv/build][v4.2.0(4.1)]
+//ADVANCED property for variable: boost_headers_DIR
+boost_headers_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_program_options_DIR
+boost_program_options_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_system_DIR
+boost_system_DIR-ADVANCED:INTERNAL=1
+//ADVANCED property for variable: boost_thread_DIR
+boost_thread_DIR-ADVANCED:INTERNAL=1
 

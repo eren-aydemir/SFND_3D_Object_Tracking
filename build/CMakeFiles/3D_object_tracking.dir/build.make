@@ -224,6 +224,9 @@ CMakeFiles/3D_object_tracking.dir/src/objectDetection2D.cpp.o.provides.build: CM
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_xfeatures2d.4.2.0.dylib
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_xobjdetect.4.2.0.dylib
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_xphoto.4.2.0.dylib
+3D_object_tracking: /usr/local/lib/libboost_program_options.dylib
+3D_object_tracking: /usr/local/lib/libboost_system.dylib
+3D_object_tracking: /usr/local/lib/libboost_thread-mt.dylib
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_shape.4.2.0.dylib
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_highgui.4.2.0.dylib
 3D_object_tracking: /Users/eren/OpenCV/opencv/build/lib/libopencv_datasets.4.2.0.dylib

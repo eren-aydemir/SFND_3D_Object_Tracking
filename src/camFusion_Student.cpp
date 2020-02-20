@@ -224,26 +224,63 @@ void computeTTCLidar(std::vector<LidarPoint> &lidarPointsPrev,
     double dT = 0.1;        // time between two measurements in seconds
     double laneWidth = 4.0; // assumed width of the ego lane
 
-    // find closest distance to Lidar points within ego lane
-    double minXPrev = 1e9, minXCurr = 1e9;
+    vector<double> prevDataVector;
     for (auto it = lidarPointsPrev.begin(); it != lidarPointsPrev.end(); ++it)
     {
         if (abs(it->y) <= laneWidth / 2.0)
         {
-            minXPrev = minXPrev > it->x ? it->x : minXPrev;
+            prevDataVector.push_back(it->x);
         }
     }
 
+    vector<double> currDataVector;
     for (auto it = lidarPointsCurr.begin(); it != lidarPointsCurr.end(); ++it)
     {
         if (abs(it->y) <= laneWidth / 2.0)
         {
-            minXCurr = minXCurr > it->x ? it->x : minXCurr;
+            currDataVector.push_back(it->x);
         }
     }
 
+    double meanMinXPrev = std::accumulate(prevDataVector.begin(), prevDataVector.end(), 0.0) / prevDataVector.size();
+    double meanMinXCurr = std::accumulate(currDataVector.begin(), currDataVector.end(), 0.0) / currDataVector.size();
+
+    TTC = meanMinXCurr * dT / std::abs(meanMinXPrev - meanMinXCurr);
+    //return;
+    
+    size_t size = prevDataVector.size();
+    sort(prevDataVector.begin(), prevDataVector.end());
+    double medianPrevData = 0;
+    if (size % 2 == 0)
+    {
+      medianPrevData = (prevDataVector[size / 2 - 1] + prevDataVector[size / 2]) / 2;
+    }
+    else 
+    {
+      medianPrevData = prevDataVector[size / 2];
+    }
+    
+    size = currDataVector.size();
+    sort(currDataVector.begin(), currDataVector.end());
+    double medianCurrData = 0;
+    if (size % 2 == 0)
+    {
+      medianCurrData = (currDataVector[size / 2 - 1] + currDataVector[size / 2]) / 2;
+    }
+    else 
+    {
+      medianCurrData = currDataVector[size / 2];
+    }
+    
+    if ((prevDataVector.size() == 0) || (currDataVector.size() == 0))
+    {
+        TTC = NAN;
+        return;
+    }
+
     // compute TTC from both measurements
-    TTC = minXCurr * dT / (minXPrev - minXCurr);
+    TTC = medianCurrData * dT / (medianPrevData - medianCurrData);
+    return;
 }
 
 void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bbBestMatches, DataFrame &prevFrame, DataFrame &currFrame)
@@ -292,9 +329,9 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
 
     }
     
-    ofstream myFile;
-    myFile.open("bbMatrix.csv");
-    myFile << "0, 1, 2, 3, 4, 5, 6, 7, 8, 9\n";
+    //ofstream myFile;
+    //myFile.open("bbMatrix.csv");
+    //myFile << "0, 1, 2, 3, 4, 5, 6, 7, 8, 9\n";
 
     int ind1;
     int ind2;
@@ -314,7 +351,7 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
         int currentMax = 30;
         for (int j = 0; j < ind2; j++) 
         {
-            myFile << std::to_string(bbMatch[i][j]) << ",";
+            //myFile << std::to_string(bbMatch[i][j]) << ",";
             //cout << "Value " << i << " " << j << " occurs " << bbMatch[i][j] << " times \n" << endl;
             
             if (bbMatch[i][j] > currentMax)
@@ -324,7 +361,7 @@ void matchBoundingBoxes(std::vector<cv::DMatch> &matches, std::map<int, int> &bb
             }
             
         }
-        myFile << "\n";
-        cout << "Value " << i << " " << bbBestMatches[i] << " occurs " << currentMax << " times \n" << endl;
+        //myFile << "\n";
+        //cout << "Value " << i << " " << bbBestMatches[i] << " occurs " << currentMax << " times \n" << endl;
     }
 }
